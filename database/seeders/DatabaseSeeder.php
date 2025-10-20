@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         // foreach ($users as $user) {
         //     User::create($user);
         // }
-        DB::table('users')->insert($users);
+        \Illuminate\Support\Facades\DB::table('users')->insert($users);
 
         $this->call(ProductCategorySeeder::class);
     }

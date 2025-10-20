@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('localname', 50)->nullable();
             $table->string('slug', 50)->unique();
             $table->text('description')->nullable();
-            $table->string('barcode', 3)->nullable()->unique();
+            $table->string('barcode', 2)->nullable()->unique();
         });
     }
 

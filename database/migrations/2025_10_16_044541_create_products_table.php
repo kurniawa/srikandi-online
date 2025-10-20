@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('tray', 20)->nullable();
             $table->string('status', 20)->default('ready'); // ['ready', 'on display', 'active', 'inactive', 'archived', 'sold', 'out of stock', 'buyback', 'sorted', 'cleaned']
             $table->text('description')->nullable();
-            $table->string('barcode', 50)->nullable()->unique();
+            $table->string('barcode', 13)->nullable()->unique();
             $table->string('created_by', 20)->nullable(); // username dari auth user yang membuat
             $table->string('updated_by', 20)->nullable(); // username dari auth user yang melakukan update
             $table->timestamps();
