@@ -33,7 +33,8 @@ return new class extends Migration
             $table->tinyInteger('clearance_level')->default(1);
             // $table->tinyInteger('access_level')->nullable(); // akses ke konten mana saja
             $table->enum('gender', ['male', 'female'])->nullable();
-            $table->string('profile_picture')->nullable();
+            $table->string('photo')->nullable(); // path ke foto profil
+            $table->date('birthdate')->nullable();
             $table->text('description')->nullable();
             // end penambahan kolom
             $table->rememberToken();
