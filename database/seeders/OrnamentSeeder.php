@@ -138,14 +138,28 @@ class OrnamentSeeder extends Seeder
             // Bros
             ['type' => 'brooch', 'varian' => 'Bros Cantik', 'slug' => 'brooch-bros-cantik'],
         ];
-        $iBarcode = 1;
-        foreach($ornament_types as $type) {
-            if(str_contains((string)$iBarcode, '4')) {
-                $iBarcode++;
+        $iOrnamentType = 1;
+        foreach ($ornament_types as $ornament_type) {
+            if(str_contains((string)$iOrnamentType, '4')) {
+                $iOrnamentType++;
             }
-            $type['barcode'] = str_pad((string)$iBarcode, 2, '0', STR_PAD_LEFT);
-            \DB::table('ornament_types')->insert($type);
-            $iBarcode++;
+            $ornament_type['barcode'] = str_pad((string)$iOrnamentType, 2, '0', STR_PAD_LEFT);
+            \DB::table('ornament_types')->insert($ornament_type);
+            $filteredOrnaments = array_filter($ornaments, function ($item) use ($ornament_type) {
+                return $item['type'] === $ornament_type['slug'];
+            });
+            if (count($filteredOrnaments)) {
+                $iOrnament = 1;
+                foreach($filteredOrnaments as $ornament) {
+                    if(str_contains((string)$iOrnament, '4')) {
+                        $iOrnament++;
+                    }
+                    $ornament['barcode'] = str_pad((string)$iOrnament, 2, '0', STR_PAD_LEFT);
+                    \DB::table('ornaments')->insert($ornament);
+                    $iOrnament++;
+                }
+            }
+            $iOrnamentType++;
         }
         // \DB::table('ornament_types')->insert($ornament_types);
         $jewelry = [
