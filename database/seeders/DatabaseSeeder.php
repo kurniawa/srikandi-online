@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         $users = [
             ['name' => 'Adi Kurniawan', 'username' => 'cibinongguy', 'password' => bcrypt('73094621'), 'role' => 'developer', 'clearance_level' => 5, 'gender' => 'male', 'created_by' => 'cibinongguy'],
-            ['name' => 'Admin', 'username' => 'admin', 'password' => bcrypt('password'), 'role' => 'admin', 'clearance_level' => 4, 'created_by' => 'cibinongguy'],
+            ['name' => 'Admin', 'username' => 'admin', 'password' => bcrypt('password'), 'role' => 'admin', 'clearance_level' => 4, 'gender' => 'male', 'created_by' => 'cibinongguy'],
             ['name' => 'Andini Kharisma Putri', 'username' => 'andin', 'password' => bcrypt('andin'), 'role' => 'customer', 'clearance_level' => 1, 'gender' => 'female', 'created_by' => 'cibinongguy'],
             ['name' => 'Aldebaran', 'username' => 'aldebaran', 'password' => bcrypt('aldebaran'), 'role' => 'customer', 'clearance_level' => 1, 'gender' => 'male', 'created_by' => 'cibinongguy'],
         ];
@@ -31,6 +31,11 @@ class DatabaseSeeder extends Seeder
         // }
         \Illuminate\Support\Facades\DB::table('users')->insert($users);
 
-        $this->call(ProductCategorySeeder::class);
+        $this->call([
+            ProductCategorySeeder::class,
+            OrnamentSeeder::class,
+            GoldColorSeeder::class,
+            GoldStandardSeeder::class,
+        ]);
     }
 }

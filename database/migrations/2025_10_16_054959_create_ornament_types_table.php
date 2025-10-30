@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('ornament_types', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('parent_id')->nullable()->constrained('ornament_types')->onDelete('set null');
+            $table->string('parent_slug', 50)->nullable();
             $table->string('name', 50);
             $table->string('localname', 50)->nullable();
             $table->string('slug', 50)->unique();

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('slug', 20)->unique();
             $table->string('description', 20)->nullable();
             $table->string('codename')->unique();
-            $table->string('barcode', 2)->nullable();
+            $table->string('barcode', 2)->nullable()->unique();
         });
     }
 

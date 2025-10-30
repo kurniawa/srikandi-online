@@ -144,7 +144,7 @@ class OrnamentSeeder extends Seeder
                 $iOrnamentType++;
             }
             $ornament_type['barcode'] = str_pad((string)$iOrnamentType, 2, '0', STR_PAD_LEFT);
-            \DB::table('ornament_types')->insert($ornament_type);
+            $ornament_type_new = \App\Models\OrnamentType::create($ornament_type);
             $filteredOrnaments = array_filter($ornaments, function ($item) use ($ornament_type) {
                 return $item['type'] === $ornament_type['slug'];
             });
@@ -154,6 +154,7 @@ class OrnamentSeeder extends Seeder
                     if(str_contains((string)$iOrnament, '4')) {
                         $iOrnament++;
                     }
+                    $ornament['type_id'] = $ornament_type_new->id;
                     $ornament['barcode'] = str_pad((string)$iOrnament, 2, '0', STR_PAD_LEFT);
                     \DB::table('ornaments')->insert($ornament);
                     $iOrnament++;

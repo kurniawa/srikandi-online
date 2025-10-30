@@ -35,7 +35,7 @@ class GoldColorSeeder extends Seeder
                 'slug' => 'chrome-gold',
                 'description' => 'chrome',
                 'codename' => 'chr-g',
-                'barcode' => '03',
+                'barcode' => '05',
             ],
             [
                 'name' => 'White Gold',
