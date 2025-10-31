@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ornaments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('type_id')->constrained('ornament_types')->onDelete('cascade');
+            $table->smallIncrements('id');
+            $table->tinyInteger('type_id')->constrained('ornament_types')->onDelete('cascade');
             $table->string('type', 50);
             $table->string('varian', 100);
             $table->string('slug', 100)->unique();

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ornament_types', function (Blueprint $table) {
-            $table->id();
+            $table->tinyIncrements('id');
             $table->foreignId('parent_id')->nullable()->constrained('ornament_types')->onDelete('set null');
             $table->string('parent_slug', 50)->nullable();
             $table->string('name', 50);

@@ -40,4 +40,15 @@ return new class extends Migration
     {
         Schema::dropIfExists('products');
     }
+    /**
+     * Barcode rule:
+     * Digit ke-1 dan 2: kode: ornament_type
+     * Earring: 01 | Ear stud: 02 | Ring: 03 | Necklace: 05 | Bracelet: 06 | Anklet: 07 | Pendant: 08 | Gold Bulion: 09 | Brooch: 10 | Lain-lain: 9000000
+     *
+     * Digit ke-3, 4, 5: kode ornament->varian
+     * Digit ke-5: kode gold_color
+     * Digit ke-6,7: kode gold_purity, yakni merujuk pada tabel gold_standards
+     * Digit ke 8 s.d. 13 (5 digit terakhir): kode urutan item yang diinsert, artinya masih bisa menampung sebanyak 99.999 item.
+     *
+     */
 };
