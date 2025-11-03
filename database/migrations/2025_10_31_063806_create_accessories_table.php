@@ -15,12 +15,12 @@ return new class extends Migration
             $table->smallIncrements('id');
             $table->string('category', 50);
             $table->string('slug', 50);
-            $table->string('varian', 50);
+            $table->string('varian', 50)->nullable();
             $table->string('color', 50)->nullable()->comment('keterangan ini diperlukan terutama untuk gems');
             $table->string('warna', 50)->nullable()->comment('keterangan ini diperlukan terutama untuk gems');
             $table->string('name', 50)->nullable();
             $table->string('localname', 50)->nullable();
-            $table->string('opacity')->nullable()->comment('transparent, translucent, opaque, dense');
+            $table->tinyInteger('opacity')->nullable()->comment('0=>transparent,1=>dense,0.5=>semi-transparent');
             $table->string('codename', 20)->nullable()->unique();
             $table->string('description')->nullable();
             $table->string('barcode', 3)->nullable()->unique();
