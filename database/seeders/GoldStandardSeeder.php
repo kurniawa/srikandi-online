@@ -37,6 +37,6 @@ class GoldStandardSeeder extends Seeder
             ['name'=>'9999','slug'=>'9999','class'=>'24','purity'=>99.99,'carat'=>24,'carat_ratio'=>100.00,'barcode'=>'25'],
         ];
 
-        \DB::table('gold_standards')->insert($goldStandards);
+        \Illuminate\Support\Facades\DB::table('gold_standards')->insert($goldStandards);
     }
 }

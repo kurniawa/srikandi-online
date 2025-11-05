@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
             OrnamentSeeder::class,
             GoldColorSeeder::class,
             GoldStandardSeeder::class,
+            AccessorySeeder::class,
         ]);
     }
 }
