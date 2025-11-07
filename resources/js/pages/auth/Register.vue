@@ -9,6 +9,11 @@ import AuthBase from '@/layouts/AuthLayout.vue';
 import { login } from '@/routes';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+
+const props = defineProps({
+  user: Object
+})
+console.log(props);
 </script>
 
 <template>
