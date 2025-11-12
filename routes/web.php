@@ -4,7 +4,11 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome');
+    $user = auth()->user();
+    $data = [
+        'user' => $user,
+    ];
+    return Inertia::render('Home', $data);
 })->name('home');
 
 Route::get('dashboard', function () {
