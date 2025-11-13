@@ -1,7 +1,7 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 const props = defineProps({
-    user: Object,
+    user: Object | null,
 });
 </script>
 <template>
@@ -31,26 +31,22 @@ const props = defineProps({
                 {{-- END - PENCARIAN ITEM --}} -->
 
                 <div class="flex gap-2 items-center">
-                    @auth
-                        <a href="{{ route('choose_action') }}" class="loading-spinner size-7 rounded-full bg-amber-500 flex justify-center items-center font-bold text-white text-xl">T</a>
-                    @endauth
+                    <!-- <Link v-if="user" href="{{ route('choose_action') }}" class="loading-spinner size-7 rounded-full bg-amber-500 flex justify-center items-center font-bold text-white text-xl">T</Link>
 
-                    @if (Auth::user())
-                        <a class="loading-spinner" href="{{ route('carts.index', Auth::user()->id) }}">
-                            <div class="text-amber-700 relative">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                                </svg>
-                                <!-- @if ($cart)
-                                    <div
-                                        class="flex absolute left-4 -top-2 size-4 rounded-full bg-red-400 text-white justify-center items-center text-xs">
-                                        {{ count($cart->cart_items) }}</div>
-                                @endif -->
-                            </div>
-                        </a>
-                    @endif
+                    <Link v-if="user" class="loading-spinner" href="{{ route('carts.index', Auth::user()->id) }}">
+                        <div class="text-amber-700 relative">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                            </svg>
+                            @if ($cart)
+                                <div
+                                    class="flex absolute left-4 -top-2 size-4 rounded-full bg-red-400 text-white justify-center items-center text-xs">
+                                    {{ count($cart->cart_items) }}</div>
+                            @endif
+                        </div>
+                    </Link> -->
 
                     <!-- Profile dropdown -->
                     <div class="relative">
@@ -69,7 +65,7 @@ const props = defineProps({
                                     class="text-white bg-amber-500 rounded-full overflow-hidden w-8 h-8 flex justify-center items-center"
                                     id="user-menu-button" aria-expanded="false" aria-haspopup="true"
                                     onclick="toggleMenu('profile-menu', 'menu-close-layer')">
-                                        <img v-if="user.profile_picture_path" src="{{ asset('storage/' . Auth::user()->profile_picture_path) }}" alt="">
+                                        <img v-if="user.profile_picture_path" src="" alt="">
                                         <svg v-esle xmlns="http://www.w3.org/2000/svg" fill="none"
                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                             class="w-6 h-6">
@@ -80,7 +76,7 @@ const props = defineProps({
                             </template>
                             <button v-else type="button"
                                 class="text-amber-100 bg-amber-300 border-2 border-amber-100 rounded-full w-8 h-8 flex justify-center items-center"
-                                id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                id="user-menu-button">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                         class="w-6 h-6">

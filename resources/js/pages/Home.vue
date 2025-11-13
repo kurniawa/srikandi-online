@@ -2,7 +2,7 @@
 import MainLayout from '@/layouts/MainLayout.vue';
 import { Link } from '@inertiajs/vue3';
 const props = defineProps({
-    user: Object,
+    user: Object | null,
 });
 console.log(props.user);
 </script>
