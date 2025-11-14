@@ -4,7 +4,7 @@ import { Link } from '@inertiajs/vue3';
 const props = defineProps({
     user: Object | null,
 });
-console.log(props.user);
+// console.log(props.user);
 </script>
 <template>
     <MainLayout :user="user">
