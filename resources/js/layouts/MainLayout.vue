@@ -1,12 +1,18 @@
 <script setup>
 // import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import { Link } from '@inertiajs/vue3';
+import DropdownMenu from '@/components/ui/dropdown-menu/DropdownMenu.vue';
+import DropdownMenuContent from '@/components/ui/dropdown-menu/DropdownMenuContent.vue';
+import DropdownMenuItem from '@/components/ui/dropdown-menu/DropdownMenuItem.vue';
+import DropdownMenuTrigger from '@/components/ui/dropdown-menu/DropdownMenuTrigger.vue';
+import { Link, router } from '@inertiajs/vue3';
 const props = defineProps({
     user: Object | null,
     cart: Object | null,
 });
-// console.log(props.user);
-// AppLogoIcon
+
+function goTo(path) {
+    router.visit(path);
+}
 </script>
 
 <template>
@@ -61,43 +67,9 @@ const props = defineProps({
                     </a>
 
                     <!-- Profile dropdown -->
-                    <div class="relative">
+                    <!-- <div class="relative">
                         <div>
-                            <template v-if="user">
-                                <button v-if="user.profile_picture" type="button"
-                                    class="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                                    id="user-menu-button" aria-expanded="false" aria-haspopup="true"
-                                    onclick="toggleMenu('profile-menu', 'menu-close-layer')">
-                                    <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full"
-                                        src="{{ asset('storage/' . Auth::user()->profile_picture) }}"
-                                        alt="Profile Picture">
-                                </button>
-                                <button v-else type="button"
-                                    class="text-white bg-amber-500 rounded-full overflow-hidden w-8 h-8 flex justify-center items-center"
-                                    id="user-menu-button" aria-expanded="false" aria-haspopup="true"
-                                    onclick="toggleMenu('profile-menu', 'menu-close-layer')">
-                                    <img v-if="user.profile_picture_path" src="{{ asset('storage/' . Auth::user()->profile_picture_path) }}" alt="">
-                                    <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                        class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                    </svg>
-                                </button>
-
-                            </template>
-                            <button v-else type="button"
-                                class="text-amber-100 bg-amber-300 border-2 border-amber-100 rounded-full w-8 h-8 flex justify-center items-center"
-                                id="user-menu-button" aria-expanded="false" aria-haspopup="true"
-                                onclick="toggleMenu('profile-menu', 'menu-close-layer')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                        class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                    </svg>
-                            </button>
+                            
                         </div>
                         <div id="profile-menu"
                             class="hidden absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
@@ -133,7 +105,49 @@ const props = defineProps({
                                 </form>
                             </template>
                         </div>
-                    </div>
+                    </div> -->
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>
+                            <template v-if="user">
+                                <button v-if="user.profile_picture" type="button"
+                                    class="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 hover:cursor-pointer"
+                                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                    <span class="sr-only">Open user menu</span>
+                                    <img class="h-8 w-8 rounded-full"
+                                        src="{{ asset('storage/' . Auth::user()->profile_picture) }}"
+                                        alt="Profile Picture">
+                                </button>
+                                <button v-else type="button"
+                                    class="text-white bg-amber-500 rounded-full overflow-hidden w-8 h-8 flex justify-center items-center hover:cursor-pointer"
+                                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                    <img v-if="user.profile_picture_path" src="{{ asset('storage/' . Auth::user()->profile_picture_path) }}" alt="">
+                                    <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                        class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                    </svg>
+                                </button>
+
+                            </template>
+                            <button v-else type="button"
+                                class="text-amber-100 bg-amber-300 border-2 border-amber-100 rounded-full w-8 h-8 flex justify-center items-center"
+                                id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                        class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                    </svg>
+                            </button>
+                        </DropdownMenuTrigger>
+
+                        <DropdownMenuContent class="bg-white border rounded-md shadow-md p-1">
+                            <DropdownMenuItem class="px-3 py-1 bg-emerald-300 font-bold text-white rounded hover:bg-emerald-400 hover:cursor-pointer" @select="goTo('/products/choose-category')">
+                            New Product
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             </div>
         </div>
