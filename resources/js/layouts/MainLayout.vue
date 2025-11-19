@@ -5,18 +5,20 @@ import DropdownMenuContent from '@/components/ui/dropdown-menu/DropdownMenuConte
 import DropdownMenuItem from '@/components/ui/dropdown-menu/DropdownMenuItem.vue';
 import DropdownMenuTrigger from '@/components/ui/dropdown-menu/DropdownMenuTrigger.vue';
 import { Link, router } from '@inertiajs/vue3';
+import { ShoppingCart } from 'lucide-vue-next';
 const props = defineProps({
     user: Object | null,
     cart: Object | null,
 });
 
+console.log(props.user);
 function goTo(path) {
     router.visit(path);
 }
 </script>
 
 <template>
-    <nav class="bg-linear-to-br from-amber-500 to-amber-200 no-print py-2">
+    <nav class="bg-linear-to-tr from-amber-200 to-amber-500 no-print py-2">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex gap-1 items-center justify-between">
                 <div class="w-9">
@@ -42,7 +44,7 @@ function goTo(path) {
                 <!-- END - PENCARIAN ITEM -->
 
                 <div class="flex gap-2 items-center">
-                    <a v-if="user" href="{{ route('choose_action') }}" class="loading-spinner size-7 rounded-full bg-amber-500 flex justify-center items-center font-bold text-white text-xl">T</a>
+                    <!-- <a v-if="user" href="{{ route('choose_action') }}" class="loading-spinner size-7 rounded-full bg-amber-500 flex justify-center items-center font-bold text-white text-xl">T</a>
                     <button type="button"
                         class="rounded-full bg-rose-200 p-1 text-gray-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span class="sr-only">View notifications</span>
@@ -51,20 +53,16 @@ function goTo(path) {
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                         </svg>
-                    </button>
-
-                    <a v-if="user" class="loading-spinner" href="{{ route('carts.index', Auth::user()->id) }}">
-                        <div class="text-amber-700 relative">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                            </svg>
+                    </button> -->
+                    
+                    <Link v-if="user" class="loading-spinner" href="{{ route('carts.index', Auth::user()->id) }}">
+                        <div class="relative">
+                            <component :is="ShoppingCart" class="text-white"/>
                             <div v-if="cart"
                                 class="flex absolute left-4 -top-2 size-4 rounded-full bg-red-400 text-white justify-center items-center text-xs">
                                 {{ count($cart.cart_items) }}</div>
                         </div>
-                    </a>
+                    </Link>
 
                     <!-- Profile dropdown -->
                     <!-- <div class="relative">
@@ -145,6 +143,9 @@ function goTo(path) {
                         <DropdownMenuContent class="bg-white border rounded-md shadow-md p-1">
                             <DropdownMenuItem class="px-3 py-1 bg-emerald-300 font-bold text-white rounded hover:bg-emerald-400 hover:cursor-pointer" @select="goTo('/products/choose-category')">
                             New Product
+                            </DropdownMenuItem>
+                            <DropdownMenuItem class="px-3 py-1 rounded hover:bg-gray-400 hover:cursor-pointer" @select="goTo('/dashboard')">
+                            Dashboard
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

@@ -10,11 +10,19 @@ Route::get('/', function () {
         'user' => $user,
     ];
     return Inertia::render('Home', $data);
-})->name('home');
+})->name('home')->middleware('auth');
+
+Route::get('/welcome', function () {
+    $user = auth()->user();
+    $data = [
+        'user' => $user,
+    ];
+    return Inertia::render('Welcome', $data);
+})->name('welcome');
 
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'admin'])->name('dashboard');
 
 Route::resource('products', ProductController::class);
 // Mengcover:

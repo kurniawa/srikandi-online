@@ -132,7 +132,7 @@ import { Head, Link } from '@inertiajs/vue3';
                             </span>
                         </li>
                     </ul>
-                    <ul class="flex gap-3 text-sm leading-normal">
+                    <ul class="flex flex-col gap-2 text-sm leading-normal">
                         <li>
                             <a
                                 href="https://cloud.laravel.com"
@@ -141,6 +141,22 @@ import { Head, Link } from '@inertiajs/vue3';
                             >
                                 Deploy now
                             </a>
+                        </li>
+                        <li>
+                            <Link
+                                href="/"
+                                class="inline-block rounded-sm border border-black bg-[#1b1b18] px-5 py-1.5 text-sm leading-normal text-white hover:border-black hover:bg-black dark:border-[#eeeeec] dark:bg-[#eeeeec] dark:text-[#1C1C1A] dark:hover:border-white dark:hover:bg-white"
+                            >
+                                Home
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/dashboard"
+                                class="inline-block rounded-sm border border-black bg-[#1b1b18] px-5 py-1.5 text-sm leading-normal text-white hover:border-black hover:bg-black dark:border-[#eeeeec] dark:bg-[#eeeeec] dark:text-[#1C1C1A] dark:hover:border-white dark:hover:bg-white"
+                            >
+                                Dashboard
+                            </Link>
                         </li>
                     </ul>
                 </div>
