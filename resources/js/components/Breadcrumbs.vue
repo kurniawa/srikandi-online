@@ -8,6 +8,7 @@ import {
     BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Link } from '@inertiajs/vue3';
+import { Gem } from 'lucide-vue-next';
 
 interface BreadcrumbItemType {
     title: string;
@@ -16,12 +17,14 @@ interface BreadcrumbItemType {
 
 defineProps<{
     breadcrumbs: BreadcrumbItemType[];
+    icon?: any;
 }>();
 </script>
 
 <template>
     <Breadcrumb>
         <BreadcrumbList>
+            <component v-if="icon" :is="icon" class="size-4" />
             <template v-for="(item, index) in breadcrumbs" :key="index">
                 <BreadcrumbItem>
                     <template v-if="index === breadcrumbs.length - 1">

@@ -24,6 +24,10 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified', 'admin'])->name('dashboard');
 
+Route::controller(ProductController::class)->group(function () {
+    Route::get('/products/choose-category', 'chooseCategory')->name('products.choose-category');
+});
+
 Route::resource('products', ProductController::class);
 // Mengcover:
 // Route::get('/products', 'index')->name('products.index');
@@ -34,9 +38,7 @@ Route::resource('products', ProductController::class);
 // Route::put('/products/{product}', 'update')->name('products.update');
 // Route::delete('/products/{product}', 'destroy')->name('products.destroy');
 
-Route::controller(ProductController::class)->group(function () {
-    Route::get('/products/choose-category', 'chooseCategory')->name('products.choose-category');
-});
+
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
