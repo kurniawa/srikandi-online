@@ -37,6 +37,7 @@ Route::resource('products', ProductController::class);
 // Route::get('/products/{product}/edit', 'edit')->name('products.edit');
 // Route::put('/products/{product}', 'update')->name('products.update');
 // Route::delete('/products/{product}', 'destroy')->name('products.destroy');
+Route::get('/api/autocomplete', [App\Http\Controllers\APIController::class, 'autocomplete'])->name('api.autocomplete');
 
 
 
