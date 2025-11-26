@@ -19,9 +19,21 @@ class APIController extends Controller
             return collect([]);
         }
 
-        return DB::table($table)
+        $results = DB::table($table)
             ->where($column, 'LIKE', "%{$text}%")
             ->limit(15)
-            ->pluck($column);
+            ->get(["$column as name", 'slug']);
+
+        return $results;
+        
+        // // Memproses collection untuk mendapatkan dua array terpisah
+        // $columnValues = $results->pluck($column)->values()->toArray();
+        // $slugValues = $results->pluck('slug')->values()->toArray();
+
+        // // Mengembalikan respons JSON dengan format yang diinginkan
+        // return response()->json([
+        //     'columns' => $columnValues,
+        //     'slugs' => $slugValues,
+        // ]);
     }
 }
