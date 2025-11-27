@@ -88,6 +88,15 @@ function handleKeydown(e) {
             break;
     }
 }
+
+function handleBlur(e) {
+    emits('blur', e);
+
+    setTimeout(() => {
+        open.value = false;
+        highlighted.value = -1;
+    }, 150);
+}
 </script>
 
 
@@ -100,7 +109,7 @@ function handleKeydown(e) {
             @input="handleInput"
             @keydown="handleKeydown"
             @focus="open = true"
-            @blur="() => setTimeout(() => open = false, 150)"
+            @blur="handleBlur"
         />
 
         <div

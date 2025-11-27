@@ -15,14 +15,24 @@ class APIController extends Controller
         $text = $q['text'] ?? '';
 
         // basic validation to avoid SQL injection via table/column names
-        if (!preg_match('/^[A-Za-z0-9_]+$/', $table) || !preg_match('/^[A-Za-z0-9_]+$/', $column)) {
-            return collect([]);
+        if (isset($q['parent'])) {
+            if (!preg_match('/^[A-Za-z0-9_]+$/', $table) || !preg_match('/^[A-Za-z0-9_]+$/', $column) || !preg_match('/^[A-Za-z0-9_]+$/', $q['parent']) || !preg_match('/^[A-Za-z0-9-_]+$/', $q['parent_slug'])) {
+                return collect([]);
+            }
+            $results = DB::table($table)
+                ->where($column, 'LIKE', "%{$text}%")
+                ->where($q['parent'], $q['parent_slug'])
+                ->limit(15)
+                ->get(["$column as name", 'slug']);
+        } else {
+            if (!preg_match('/^[A-Za-z0-9_]+$/', $table) || !preg_match('/^[A-Za-z0-9_]+$/', $column)) {
+                return collect([]);
+            }
+            $results = DB::table($table)
+                ->where($column, 'LIKE', "%{$text}%")
+                ->limit(15)
+                ->get(["$column as name", 'slug']);
         }
-
-        $results = DB::table($table)
-            ->where($column, 'LIKE', "%{$text}%")
-            ->limit(15)
-            ->get(["$column as name", 'slug']);
 
         return $results;
         

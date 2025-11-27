@@ -22,12 +22,14 @@ class ProductController extends Controller
     {
         $get = $request->query();
         $user = auth()->user();
+        $gold_colors = \DB::table('gold_colors')->get();
         $data = [
             'user' => $user,
             'category' => $get['category'] ?? null,
+            'gold_colors' => $gold_colors,
         ];
         return Inertia::render('products/Create', $data);
-    }
+    } 
 
     /**
      * Store a newly created resource in storage.

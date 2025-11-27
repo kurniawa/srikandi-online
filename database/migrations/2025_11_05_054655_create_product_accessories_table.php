@@ -14,7 +14,13 @@ return new class extends Migration
         Schema::create('product_accessories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->foreignId('accessory_id')->constrained('accessories')->onDelete('cascade');
+            $table->unsignedSmallInteger('accessory_id');
+
+            $table->foreign('accessory_id')
+                ->references('id')
+                ->on('accessories')
+                ->onDelete('cascade');
+                
             $table->tinyInteger('quantity')->default(1)->comment('mata full=>99');
         });
     }

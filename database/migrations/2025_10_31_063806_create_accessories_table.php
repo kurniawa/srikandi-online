@@ -23,7 +23,7 @@ return new class extends Migration
             $table->tinyInteger('opacity')->nullable()->comment('0=>transparent,1=>dense,0.5=>semi-transparent');
             $table->string('codename', 20)->nullable()->unique();
             $table->string('description')->nullable();
-            $table->string('barcode', 3)->nullable()->unique();
+            $table->string('barcode', 4)->nullable()->unique();
         });
     }
 

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('ornament_types', function (Blueprint $table) {
             $table->tinyIncrements('id');
+            $table->string('category', 50)->default('jewelry');
             $table->tinyInteger('parent_id')->nullable()->constrained('ornament_types')->onDelete('set null');
             $table->string('parent_slug', 50)->nullable();
             $table->string('name', 50);

@@ -23,7 +23,7 @@ class GoldColorSeeder extends Seeder
             ],
             [
                 'name' => 'Rose Gold',
-                'localname' => 'Emas Mawar',
+                'localname' => 'Rose Gold',
                 'slug' => 'rose-gold',
                 'description' => 'rose gold',
                 'codename' => 'r-g',
