@@ -7,8 +7,8 @@ import DropdownMenuTrigger from '@/components/ui/dropdown-menu/DropdownMenuTrigg
 import { Link, router } from '@inertiajs/vue3';
 import { ShoppingCart, CircleUserRound } from 'lucide-vue-next';
 const props = defineProps({
-    user: Object | null,
-    cart: Object | null,
+    user: Array | null,
+    cart: Array | null,
     breadcrumbs: {
         type: Array,
         default: () => [],

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Accessory;
+use App\Models\GoldColor;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -22,11 +24,13 @@ class ProductController extends Controller
     {
         $get = $request->query();
         $user = auth()->user();
-        $gold_colors = \DB::table('gold_colors')->get();
+        $gold_colors = GoldColor::all();
+        $accessories = Accessory::all();
         $data = [
             'user' => $user,
             'category' => $get['category'] ?? null,
             'gold_colors' => $gold_colors,
+            'accessories' => $accessories,
         ];
         return Inertia::render('products/Create', $data);
     } 
