@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import Input from './Input.vue';
+import axios from 'axios';
 
 const emits = defineEmits([
     'update:modelValue',   // tampil di input (name)
@@ -20,22 +21,72 @@ const props = defineProps({
         type: [String, Object, Number],
         default: null,
     },
-    suggestions: {
-        type: Array,
-        default: () => [],   // [{ name, slug }]
-    },
     delay: {
         type: Number,
         default: 200,
     },
+    table: {
+        type: String,
+        required: true,
+    },
+    column: {
+        type: String,
+        required: true,
+    },
+    parent: {
+        type: String,
+        default: null,
+    },
+    parentValue: {
+        type: [String, Number],
+        default: null,
+    },
 });
+
+const suggestions = ref([]);
+
+async function fetchSuggestions(text) {
+    console.log('fetching suggestions for', text);
+    console.log('table:', props.table, 'column:', props.column, 'parent:', props.parent, 'parentValue:',  props.parentValue);
+    if (!text) {
+        suggestions.value = [];
+        return;
+    }
+    let res;
+    if (props.parent) {
+        res = await axios.get(`/api/autocomplete?table=${props.table}&column=${props.column}&parent=${props.parent}&parent_slug=${props.parentValue}`, {
+            params: { 
+                q: text,
+                table: props.table,
+                column: props.column,
+                parent: props.parent,
+                parent_slug: props.parentValue,
+            }
+        });
+        
+    } else {
+        res = await axios.get(`/api/autocomplete`, {
+            params: { 
+                q: text,
+                table: props.table,
+                column: props.column,
+            }
+        });
+    }
+    // console.log(res.data);
+    suggestions.value = res.data;
+}
+
+function clearSuggestions() {
+    suggestions.value = [];
+}
 
 const open = ref(false);
 const highlighted = ref(-1);
 let timer = null;
 
 const showSuggestions = computed(() =>
-    open.value && props.suggestions.length > 0
+    open.value && suggestions.value.length > 0
 );
 
 function handleInput(e) {
@@ -49,6 +100,7 @@ function handleInput(e) {
     clearTimeout(timer);
     timer = setTimeout(() => {
         emits('search', value);
+        fetchSuggestions(value);
     }, props.delay);
 }
 
@@ -67,7 +119,7 @@ function handleKeydown(e) {
     switch (e.key) {
         case 'ArrowDown':
             e.preventDefault();
-            if (highlighted.value < props.suggestions.length - 1)
+            if (highlighted.value < suggestions.value.length - 1)
                 highlighted.value++;
             break;
 
@@ -79,7 +131,7 @@ function handleKeydown(e) {
 
         case 'Enter':
             if (highlighted.value >= 0)
-                select(props.suggestions[highlighted.value]);
+                select(suggestions.value[highlighted.value]);
             break;
 
         case 'Escape':
@@ -110,6 +162,7 @@ function handleBlur(e) {
             @keydown="handleKeydown"
             @focus="open = true"
             @blur="handleBlur"
+            @change="clearSuggestions"
         />
 
         <div

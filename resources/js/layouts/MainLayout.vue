@@ -30,13 +30,13 @@ function goTo(path) {
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex gap-1 items-center justify-between">
                 <div class="w-9">
-                    <Link :href="route('home')" class="loading-spinner">
+                    <Link href="/" class="loading-spinner">
                         <img src="/images/icons/icon-96x96.png" alt="" srcset="" class="size-8 rounded-full overflow-hidden">
                     </Link>
                 </div>
 
                 <!-- PENCARIAN ITEM -->
-                <form action="{{ route('home') }}" method="GET" class="flex-auto">
+                <form action="/" method="GET" class="flex-auto">
                     <div class="flex gap-1 items-center bg-white text-xs text-slate-400 rounded-lg border-slate-300 border-2 pl-1">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4">
@@ -53,7 +53,7 @@ function goTo(path) {
 
                 <div class="flex gap-2 items-center">
                     
-                    <Link v-if="user" class="loading-spinner" href="{{ route('carts.index', Auth::user()->id) }}">
+                    <Link v-if="user" class="loading-spinner" href="/">
                         <div class="relative">
                             <component :is="ShoppingCart" class="text-white"/>
                             <div v-if="cart"

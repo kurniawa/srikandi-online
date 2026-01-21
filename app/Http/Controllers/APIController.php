@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class APIController extends Controller
 {
@@ -13,6 +14,7 @@ class APIController extends Controller
         $table = $q['table'] ?? '';
         $column = $q['column'] ?? '';
         $text = $q['text'] ?? '';
+        // Log::debug($q);
 
         // basic validation to avoid SQL injection via table/column names
         if (isset($q['parent'])) {
@@ -33,7 +35,7 @@ class APIController extends Controller
                 ->limit(15)
                 ->get(["$column as name", 'slug']);
         }
-
+        // Log::debug('Autocomplete results', $results->toArray());
         return $results;
         
         // // Memproses collection untuk mendapatkan dua array terpisah

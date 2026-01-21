@@ -10,7 +10,7 @@ const props = defineProps({
 });
 
 const breadcrumbs = [
-    { title: 'Products', href: route('products.index') },
+    { title: 'Products', href: '/products' },
     { title: 'Choose Category' },
 ];
 

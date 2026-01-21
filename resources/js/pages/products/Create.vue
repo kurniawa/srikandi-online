@@ -20,7 +20,6 @@ const props = defineProps({
     accessories: Array | null,
 });
 // console.log(props);
-const suggestions = ref([]);
 const selectedSuggestions = ref([
     {table: 'ornament_types', slug: ''},
     {table: 'ornament_varian', slug: ''},
@@ -49,29 +48,6 @@ watch(
     form.value.total_price = price * weight
   }
 )
-
-async function fetchSuggestions(table, column, parent, parentValue, text) {
-    if (!text) {
-        suggestions.value = [];
-        return;
-    }
-    let res;
-    if (parent) {
-        res = await axios.get(`/api/autocomplete?table=${table}&column=${column}&text=${text}&parent=${parent}&parent_slug=${parentValue}`, {
-            params: { q: text }
-        });
-    } else {
-        res = await axios.get(`/api/autocomplete?table=${table}&column=${column}&text=${text}`, {
-            params: { q: text }
-        });
-    }
-    // console.log(res.data);
-    suggestions.value = res.data;
-}
-
-function clearSuggestions() {
-    suggestions.value = [];
-}
 
 /**
  * Fitur Spec Options
@@ -105,9 +81,10 @@ const selectedSpecs = ref([]);
                         <Autocomplete
                             v-model="form.ornament_type"
                             v-model:selected="selectedSuggestions[0].slug"
-                            @change="clearSuggestions"
-                            :suggestions="suggestions"
-                            @search="fetchSuggestions('ornament_types', 'localname', 'category', 'jewelry', $event)"
+                            table="ornament_types"
+                            column="localname"
+                            parent="category"
+                            parent-value="jewelry"
                             placeholder="Tipe Ornament"
                         />
                         <InputError :message="errors.ornament_type" />
@@ -117,9 +94,10 @@ const selectedSpecs = ref([]);
                         <Autocomplete
                             v-model="form.ornament_varian"
                             v-model:selected="selectedSuggestions[1].slug"
-                            @change="clearSuggestions"
-                            :suggestions="suggestions"
-                            @search="fetchSuggestions('ornaments', 'varian', 'type', selectedSuggestions[0].slug, $event)"
+                            table="ornaments"
+                            column="varian"
+                            parent="type"
+                            :parent-value="selectedSuggestions[0].slug"
                             placeholder="Varian Ornament"
                         />
                         <InputError :message="errors.ornament_varian" />
@@ -160,9 +138,10 @@ const selectedSpecs = ref([]);
                         <Autocomplete
                             v-model="form.gold_ratio"
                             v-model:selected="selectedSuggestions[2].slug"
-                            @change="clearSuggestions"
-                            :suggestions="suggestions"
-                            @search="fetchSuggestions('gold_standards', 'purity', null, null, $event)"
+                            table="gold_standards"
+                            column="purity"
+                            :parent="null"
+                            :parent-value="null"
                             placeholder="Kadar"
                         />
                         <InputError :message="errors.kadar" />
