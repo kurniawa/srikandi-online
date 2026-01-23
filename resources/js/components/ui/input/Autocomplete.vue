@@ -46,17 +46,18 @@ const props = defineProps({
 const suggestions = ref([]);
 
 async function fetchSuggestions(text) {
-    console.log('fetching suggestions for', text);
-    console.log('table:', props.table, 'column:', props.column, 'parent:', props.parent, 'parentValue:',  props.parentValue);
+    // console.log('fetching suggestions for', text);
+    // console.log('table:', props.table, 'column:', props.column, 'parent:', props.parent, 'parentValue:',  props.parentValue);
     if (!text) {
         suggestions.value = [];
         return;
     }
     let res;
     if (props.parent) {
-        res = await axios.get(`/api/autocomplete?table=${props.table}&column=${props.column}&parent=${props.parent}&parent_slug=${props.parentValue}`, {
+        res = await axios.get(`/api/autocomplete`, {
+            // ?table=${props.table}&column=${props.column}&parent=${props.parent}&parent_slug=${props.parentValue}
             params: { 
-                q: text,
+                text: text,
                 table: props.table,
                 column: props.column,
                 parent: props.parent,
@@ -67,7 +68,7 @@ async function fetchSuggestions(text) {
     } else {
         res = await axios.get(`/api/autocomplete`, {
             params: { 
-                q: text,
+                text: text,
                 table: props.table,
                 column: props.column,
             }
@@ -130,6 +131,7 @@ function handleKeydown(e) {
             break;
 
         case 'Enter':
+            e.preventDefault();
             if (highlighted.value >= 0)
                 select(suggestions.value[highlighted.value]);
             break;
@@ -167,7 +169,7 @@ function handleBlur(e) {
 
         <div
             v-if="showSuggestions"
-            class="absolute left-0 right-0 mt-1 rounded-xl border bg-white shadow"
+            class="absolute left-0 right-0 mt-1 rounded-xl border bg-white shadow z-10"
         >
             <div
                 v-for="(item, index) in suggestions"

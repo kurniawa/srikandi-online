@@ -7,12 +7,13 @@ import Input from '@/components/ui/input/Input.vue';
 import Label from '@/components/ui/label/Label.vue';
 import MainLayout from '@/layouts/MainLayout.vue';
 import { cn } from '@/lib/utils';
-import { Form } from '@inertiajs/vue3';
 import axios from 'axios';
 import { LoaderCircle } from 'lucide-vue-next';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import SpecOptions from './SpecOptions.vue';
 import MoneyInput from '@/components/MoneyInput.vue';
+import { useForm } from '@inertiajs/vue3';
+
 const props = defineProps({
     user: Array | null,
     category: String | null,
@@ -26,28 +27,36 @@ const selectedSuggestions = ref([
     {table: 'gold_standard', slug: ''},
 ]);
 
-const form = ref({
+const form = useForm({
     product_category: props.category || '',
     ornament_type: '',
+    ornament_type_slug: '',
+    ornament_variant: '',
+    ornament_variant_slug: '',
     description: '',
     gold_color: '',
     gold_ratio: '',
+    gold_ratio_slug: '',
     weight: 0,
     price_per_gram: 0,
     total_price: 0,
+    processing: false,
 });
 
-watch(
-  () => [form.value.price_per_gram, form.value.weight],
-  ([price, weight]) => {
-    if (!price || !weight) {
-      form.value.total_price = 0
-      return
-    }
+const totalPrice = computed(() => {
+  const price = Number(form.price_per_gram)
+  const weight = Number(form.weight)
 
-    form.value.total_price = price * weight
-  }
-)
+  return price && weight ? price * weight : 0
+})
+
+watch(totalPrice, value => {
+  form.total_price = value
+})
+
+// watch(form, () => {
+//     console.log(form);
+// }, { deep: true });
 
 /**
  * Fitur Spec Options
@@ -59,9 +68,7 @@ const selectedSpecs = ref([]);
 <template>
     <MainLayout :user="user">
         <div class="m-2 p-2 border rounded shadow drop-shadow">
-            <Form v-bind="ProductController.store.form()"
-                :reset-on-success="['password']"
-                v-slot="{ errors, processing }"
+            <form @submit.prevent="form.post('/products')"
                 class="flex flex-col gap-6 relative">
                 <div class="grid grid-cols-2 gap-x-2 gap-y-4">
                     <div class="grid gap-2">
@@ -74,33 +81,33 @@ const selectedSpecs = ref([]);
                             class="bg-gray-50 font-bold"
                             disabled
                         />
-                        <InputError :message="errors.product_category" />
+                        <InputError :message="form.errors.product_category" />
                     </div>
                     <div class="grid gap-2">
                         <Label>Tipe Ornament:</Label>
                         <Autocomplete
-                            v-model="form.ornament_type"
-                            v-model:selected="selectedSuggestions[0].slug"
+                            v-model:modelValue="form.ornament_type"
+                            v-model:selected="form.ornament_type_slug"
                             table="ornament_types"
                             column="localname"
                             parent="category"
                             parent-value="jewelry"
                             placeholder="Tipe Ornament"
                         />
-                        <InputError :message="errors.ornament_type" />
+                        <InputError :message="form.errors.ornament_type" />
                     </div>
                     <div class="grid gap-2">
                         <Label>Varian Ornament:</Label>
                         <Autocomplete
-                            v-model="form.ornament_varian"
-                            v-model:selected="selectedSuggestions[1].slug"
+                            v-model="form.ornament_variant"
+                            v-model:selected="form.ornament_variant_slug"
                             table="ornaments"
                             column="varian"
                             parent="type"
-                            :parent-value="selectedSuggestions[0].slug"
+                            :parent-value="form.ornament_type_slug"
                             placeholder="Varian Ornament"
                         />
-                        <InputError :message="errors.ornament_varian" />
+                        <InputError :message="form.errors.ornament_variant" />
                     </div>
                     <div class="grid gap-2">
                         <Label>Deskripsi (opt.):</Label>
@@ -110,7 +117,7 @@ const selectedSpecs = ref([]);
                             name="description"
                             placeholder="Deskripsi (opt.)"
                         />
-                        <InputError :message="errors.description" />
+                        <InputError :message="form.errors.description" />
                     </div>
                     <div class="grid gap-2">
                         <Label>Warna Emas:</Label>
@@ -131,20 +138,20 @@ const selectedSpecs = ref([]);
                                 {{ color.localname }}
                             </option>
                         </select>
-                        <InputError :message="errors.gold_color" />
+                        <InputError :message="form.errors.gold_color" />
                     </div>
                     <div class="grid gap-2">
                         <Label>Kadar:</Label>
                         <Autocomplete
                             v-model="form.gold_ratio"
-                            v-model:selected="selectedSuggestions[2].slug"
+                            v-model:selected="form.gold_ratio_slug"
                             table="gold_standards"
                             column="purity"
                             :parent="null"
                             :parent-value="null"
                             placeholder="Kadar"
                         />
-                        <InputError :message="errors.kadar" />
+                        <InputError :message="form.errors.gold_ratio" />
                     </div>
                     <div class="grid gap-2">
                         <Label>Berat (g):</Label>
@@ -154,7 +161,7 @@ const selectedSpecs = ref([]);
                             name="weight"
                             placeholder="Berat"
                         />
-                        <InputError :message="errors.weight" />
+                        <InputError :message="form.errors.weight" />
                     </div>
                     <div class="grid gap-2">
                         <Label>Harga per gram:</Label>
@@ -163,7 +170,7 @@ const selectedSpecs = ref([]);
                             placeholder="Harga total"
                             class="border rounded-md px-3 py-1 w-full"
                         />
-                        <InputError :message="errors.price_per_gram" />
+                        <InputError :message="form.errors.price_per_gram" />
                     </div>
                     <div class="grid gap-2">
                         <Label>Harga total:</Label>
@@ -172,7 +179,7 @@ const selectedSpecs = ref([]);
                             placeholder="Harga total"
                             class="border rounded-md px-3 py-1 w-full"
                         />
-                        <InputError :message="errors.total_price" />
+                        <InputError :message="form.errors.total_price" />
                     </div>
                     <!-- <ComponentGems  v-if="selectedSpecs.includes('checkbox_gems')" />
                     <ComponentToys  v-if="selectedSpecs.includes('checkbox_toys')" />
@@ -186,16 +193,16 @@ const selectedSpecs = ref([]);
                     type="submit"
                     class="mt-4 w-full"
                     :tabindex="4"
-                    :disabled="processing"
+                    :disabled="form.processing"
                     data-test="login-button"
                 >
                     <LoaderCircle
-                        v-if="processing"
+                        v-if="form.processing"
                         class="h-4 w-4 animate-spin"
                     />
                     Submit
                 </Button>
-            </Form>
+            </form>
         </div>
     </MainLayout>
 </template>
