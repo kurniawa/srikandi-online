@@ -1,5 +1,4 @@
 <script setup>
-import ProductController from '@/actions/App/Http/Controllers/ProductController';
 import InputError from '@/components/InputError.vue';
 import Button from '@/components/ui/button/Button.vue';
 import Autocomplete from '@/components/ui/input/Autocomplete.vue';
@@ -13,6 +12,7 @@ import { computed, ref, watch } from 'vue';
 import SpecOptions from './SpecOptions.vue';
 import MoneyInput from '@/components/MoneyInput.vue';
 import { useForm } from '@inertiajs/vue3';
+import ComponentGems from './ComponentGems.vue';
 
 const props = defineProps({
     user: Array | null,
@@ -21,11 +21,7 @@ const props = defineProps({
     accessories: Array | null,
 });
 // console.log(props);
-const selectedSuggestions = ref([
-    {table: 'ornament_types', slug: ''},
-    {table: 'ornament_varian', slug: ''},
-    {table: 'gold_standard', slug: ''},
-]);
+const processing = ref(false);
 
 const form = useForm({
     product_category: props.category || '',
@@ -40,7 +36,6 @@ const form = useForm({
     weight: 0,
     price_per_gram: 0,
     total_price: 0,
-    processing: false,
 });
 
 const totalPrice = computed(() => {
@@ -54,21 +49,30 @@ watch(totalPrice, value => {
   form.total_price = value
 })
 
-// watch(form, () => {
-//     console.log(form);
-// }, { deep: true });
+function handleSubmit() {
+    processing.value = true;
+    form.post('/products', {
+        onFinish: () => {
+            processing.value = false;
+        },
+    });
+}
 
 /**
  * Fitur Spec Options
  * @param params 
  */
 const selectedSpecs = ref([]);
+watch(selectedSpecs, (newVal) => {
+    console.log('Selected Specs:', newVal);
+});
+
 </script>
 
 <template>
     <MainLayout :user="user">
         <div class="m-2 p-2 border rounded shadow drop-shadow">
-            <form @submit.prevent="form.post('/products')"
+            <form @submit.prevent="handleSubmit"
                 class="flex flex-col gap-6 relative">
                 <div class="grid grid-cols-2 gap-x-2 gap-y-4">
                     <div class="grid gap-2">
@@ -86,7 +90,7 @@ const selectedSpecs = ref([]);
                     <div class="grid gap-2">
                         <Label>Tipe Ornament:</Label>
                         <Autocomplete
-                            v-model:modelValue="form.ornament_type"
+                            v-model="form.ornament_type"
                             v-model:selected="form.ornament_type_slug"
                             table="ornament_types"
                             column="localname"
@@ -181,8 +185,8 @@ const selectedSpecs = ref([]);
                         />
                         <InputError :message="form.errors.total_price" />
                     </div>
-                    <!-- <ComponentGems  v-if="selectedSpecs.includes('checkbox_gems')" />
-                    <ComponentToys  v-if="selectedSpecs.includes('checkbox_toys')" />
+                    <ComponentGems  v-if="selectedSpecs.includes('checkbox_gems')" />
+                    <!-- <ComponentToys  v-if="selectedSpecs.includes('checkbox_toys')" />
                     <ComponentSize  v-if="selectedSpecs.includes('checkbox_size')" />
                     <ComponentBrand v-if="selectedSpecs.includes('checkbox_brand')" />
                     <ComponentPlate v-if="selectedSpecs.includes('checkbox_plate')" /> -->
@@ -193,11 +197,11 @@ const selectedSpecs = ref([]);
                     type="submit"
                     class="mt-4 w-full"
                     :tabindex="4"
-                    :disabled="form.processing"
+                    :disabled="processing"
                     data-test="login-button"
                 >
                     <LoaderCircle
-                        v-if="form.processing"
+                        v-if="processing"
                         class="h-4 w-4 animate-spin"
                     />
                     Submit
