@@ -12,7 +12,7 @@ import { computed, ref, watch } from 'vue';
 import SpecOptions from './SpecOptions.vue';
 import MoneyInput from '@/components/MoneyInput.vue';
 import { useForm } from '@inertiajs/vue3';
-import ComponentGems from './ComponentGems.vue';
+import ComponentGem from './ComponentGem.vue';
 
 const props = defineProps({
     user: Array | null,
@@ -36,6 +36,7 @@ const form = useForm({
     weight: 0,
     price_per_gram: 0,
     total_price: 0,
+    gems: []
 });
 
 const totalPrice = computed(() => {
@@ -48,6 +49,16 @@ const totalPrice = computed(() => {
 watch(totalPrice, value => {
   form.total_price = value
 })
+
+function addGem() {
+    form.gems.push({
+        color: '',
+        size: '',
+        carat: '',
+        quantity: 1,
+        transparency: 'transparent',
+    });
+}
 
 function handleSubmit() {
     processing.value = true;
@@ -185,7 +196,16 @@ watch(selectedSpecs, (newVal) => {
                         />
                         <InputError :message="form.errors.total_price" />
                     </div>
-                    <ComponentGems  v-if="selectedSpecs.includes('checkbox_gems')" />
+                    <div v-for="(gem, index) in form.gems" :key="index" class="mb-4">
+                        <ComponentGem
+                            v-model:colorName="gem.color_name"
+                            v-model:colorSlug="gem.color_slug"
+                            v-model:quantity="gem.quantity"
+                            v-model:transparency="gem.transparency"
+                            @remove="form.gems.splice(index, 1)"
+                        />
+                    </div>
+                    <button type="button" @click="addGem">+ Tambah Gem</button>
                     <!-- <ComponentToys  v-if="selectedSpecs.includes('checkbox_toys')" />
                     <ComponentSize  v-if="selectedSpecs.includes('checkbox_size')" />
                     <ComponentBrand v-if="selectedSpecs.includes('checkbox_brand')" />
