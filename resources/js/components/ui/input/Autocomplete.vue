@@ -52,28 +52,16 @@ async function fetchSuggestions(text) {
         suggestions.value = [];
         return;
     }
-    let res;
-    if (props.parent) {
-        res = await axios.get(`/api/autocomplete`, {
-            // ?table=${props.table}&column=${props.column}&parent=${props.parent}&parent_slug=${props.parentValue}
-            params: { 
-                text: text,
-                table: props.table,
-                column: props.column,
-                parent: props.parent,
-                parent_slug: props.parentValue,
-            }
-        });
-        
-    } else {
-        res = await axios.get(`/api/autocomplete`, {
-            params: { 
-                text: text,
-                table: props.table,
-                column: props.column,
-            }
-        });
-    }
+    let res = await axios.get(`/api/autocomplete`, {
+        // ?table=${props.table}&column=${props.column}&parent=${props.parent}&parent_slug=${props.parentValue}
+        params: { 
+            text: text,
+            table: props.table,
+            column: props.column,
+            parent: props.parent,
+            parent_slug: props.parentValue,
+        }
+    });
     // console.log(res.data);
     suggestions.value = res.data;
 }

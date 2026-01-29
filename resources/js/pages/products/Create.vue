@@ -93,7 +93,7 @@ watch(selectedSpecs, (newVal) => {
                             type="text"
                             name="product_category"
                             placeholder="Kategori Produk"
-                            class="bg-gray-50 font-bold"
+                            class="bg-gray-50 font-bold text-xs"
                             disabled
                         />
                         <InputError :message="form.errors.product_category" />
@@ -196,16 +196,18 @@ watch(selectedSpecs, (newVal) => {
                         />
                         <InputError :message="form.errors.total_price" />
                     </div>
-                    <div v-for="(gem, index) in form.gems" :key="index" class="mb-4">
-                        <ComponentGem
-                            v-model:colorName="gem.color_name"
-                            v-model:colorSlug="gem.color_slug"
-                            v-model:quantity="gem.quantity"
-                            v-model:transparency="gem.transparency"
-                            @remove="form.gems.splice(index, 1)"
-                        />
+                    <div v-if="selectedSpecs.includes('checkbox_gems')">
+                        <div v-for="(gem, index) in form.gems" :key="index" class="mb-4">
+                            <ComponentGem
+                                v-model:colorName="gem.color_name"
+                                v-model:colorSlug="gem.color_slug"
+                                v-model:quantity="gem.quantity"
+                                v-model:transparency="gem.transparency"
+                                @remove="form.gems.splice(index, 1)"
+                            />
+                        </div>
+                        <button type="button" @click="addGem" class="bg-emerald-400 text-white font-bold rounded-2xl py-1 px-2">+ Tambah Gem</button>
                     </div>
-                    <button type="button" @click="addGem">+ Tambah Gem</button>
                     <!-- <ComponentToys  v-if="selectedSpecs.includes('checkbox_toys')" />
                     <ComponentSize  v-if="selectedSpecs.includes('checkbox_size')" />
                     <ComponentBrand v-if="selectedSpecs.includes('checkbox_brand')" />

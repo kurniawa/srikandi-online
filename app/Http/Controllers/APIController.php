@@ -17,8 +17,11 @@ class APIController extends Controller
         // Log::debug($q);
 
         // basic validation to avoid SQL injection via table/column names
-        if (isset($q['parent'])) {
-            if (!preg_match('/^[A-Za-z0-9_]+$/', $table) || !preg_match('/^[A-Za-z0-9_]+$/', $column) || !preg_match('/^[A-Za-z0-9_]+$/', $q['parent']) || !preg_match('/^[A-Za-z0-9-_]+$/', $q['parent_slug'])) {
+        if (isset($q['parent']) && $q['parent'] !== null && $q['parent'] !== '') {
+            if (!preg_match('/^[A-Za-z0-9_]+$/', $table) ||
+                !preg_match('/^[A-Za-z0-9_]+$/', $column) ||
+                !preg_match('/^[A-Za-z0-9_]+$/', $q['parent']) ||
+                !preg_match('/^[A-Za-z0-9-_]+$/', $q['parent_slug'])) {
                 return collect([]);
             }
             $results = DB::table($table)
